@@ -1,0 +1,359 @@
+1)#include <stdio.h>
+
+int binarySearch(int nums[], int target, int length) {
+    int left = 0;
+    int right = length - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (nums[mid] == target) {
+            return mid;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+
+    return -1; // Target not found
+}
+
+int main() {
+    int nums[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    int target = 5;
+    int length = sizeof(nums) / sizeof(nums[0]);
+
+    int result = binarySearch(nums, target, length);
+
+    if (result != -1) {
+        printf("Target %d found at index %d\n", target, result);
+    } else {
+        printf("Target %d not found in the array\n", target);
+    }
+
+    return 0;
+}
+
+
+
+2)#include <stdio.h>
+int hcf(int n1, int n2);
+int main() {
+    int n1, n2;
+    printf("Enter two positive integers: ");
+    scanf("%d %d", &n1, &n2);
+    printf("G.C.D of %d and %d is %d.", n1, n2, hcf(n1, n2));
+    return 0;
+}
+
+int hcf(int n1, int n2) {
+    if (n2 != 0)
+        return hcf(n2, n1 % n2);
+    else
+        return n1;
+}
+
+
+
+3)#include<stdio.h>
+#include<stdio.h>
+int max, min;
+int a[100];
+void maxmin(int i, int j)
+{
+ int max1, min1, mid;
+ if(i==j)
+ {
+  max = min = a[i];
+ }
+ else
+ {
+  if(i == j-1)
+  {
+   if(a[i] <a[j])
+   {
+    max = a[j];
+    min = a[i];
+   }
+   else
+   {
+    max = a[i];
+    min = a[j];
+   }
+  }
+  else
+  {
+   mid = (i+j)/2;
+   maxmin(i, mid);
+   max1 = max; min1 = min;
+   maxmin(mid+1, j);
+   if(max <max1)
+    max = max1;
+   if(min > min1)
+    min = min1;
+  }
+ }
+}
+int main ()
+{
+ int i, num;
+ printf ("\nEnter the total number of numbers : ");
+ scanf ("%d",&num);
+ printf ("Enter the numbers : \n");
+ for (i=1;i<=num;i++)
+  scanf ("%d",&a[i]);
+
+ max = a[0];
+ min = a[0];
+ maxmin(1, num);
+ printf ("Minimum element in an array : %d\n", min);
+ printf ("Maximum element in an array : %d\n", max);
+ return 0;
+}
+
+
+
+
+4)// C program to print Pascal’s Triangle
+// using combinations in O(n^2) time
+// and O(1) extra space function
+#include <stdio.h>
+void printPascal(int n)
+{
+	int line,space,i;
+    for ( line = 1; line <= n; line++) {
+        for ( space = 1; space <= n - line; space++)
+            printf("  ");
+        // used to represent C(line, i)
+        int coef = 1;
+        for ( i = 1; i <= line; i++) {
+            // The first value in a line
+            // is always 1
+            printf("%4d", coef);
+            coef = coef * (line - i) / i;
+        }
+        printf("\n");
+    }
+}
+  
+// Driver code
+int main()
+{
+    int n = 5;
+    printPascal(n);
+    return 0;
+}
+
+
+
+5)#include <stdio.h>
+
+// Function to calculate the sum of digits of a number
+int sumOfDigits(int num) {
+    int sum = 0;
+    while (num > 0) {
+        sum += num % 10;
+        num /= 10;
+    }
+    return sum;
+}
+
+// Function to find the maximum value of nums[i] + nums[j]
+int maxSumOfDigits(int nums[], int size) {
+    int maxSum = -1,i,j;
+    
+    for ( i = 0; i < size; i++) {
+        for ( j = i + 1; j < size; j++) {
+            if (sumOfDigits(nums[i]) == sumOfDigits(nums[j])) {
+                int currentSum = nums[i] + nums[j];
+                if (currentSum > maxSum) {
+                    maxSum = currentSum;
+                }
+            }
+        }
+    }
+    
+    return maxSum;
+}
+
+int main() {
+    int nums[] = {51, 71, 17, 42};
+    int size = sizeof(nums) / sizeof(nums[0]);
+    
+    int result = maxSumOfDigits(nums, size);
+    printf("Maximum value of nums[i] + nums[j]: %d\n", result);
+    
+    return 0;
+}
+
+
+
+
+
+6)#include <stdio.h>
+
+void merge(int arr[], int left[], int right[], int leftSize, int rightSize) {
+    int i = 0, j = 0, k = 0;
+
+    while (i < leftSize && j < rightSize) {
+        if (left[i] >= right[j]) {
+            arr[k++] = left[i++];
+        } else {
+            arr[k++] = right[j++];
+        }
+    }
+
+    while (i < leftSize) {
+        arr[k++] = left[i++];
+    }
+
+    while (j < rightSize) {
+        arr[k++] = right[j++];
+    }
+}
+
+void mergeSort(int arr[], int size) {
+    if (size <= 1) {
+        return;
+    }
+
+    int mid = size / 2;
+    int left[mid];
+    int right[size - mid];
+	int i;
+    for ( i = 0; i < mid; i++) {
+        left[i] = arr[i];
+    }
+
+    for ( i = mid; i < size; i++) {
+        right[i - mid] = arr[i];
+    }
+
+    mergeSort(left, mid);
+    mergeSort(right, size - mid);
+    merge(arr, left, right, mid, size - mid);
+}
+
+int main() {
+    int A[] = {3, 8, 1, 9};
+    int B[] = {4, -2, 0, 7};
+    int m = 4, n = 4;
+	int i;
+    int merged[m + n];
+
+    for (i = 0; i < m; i++) {
+        merged[i] = A[i];
+    }
+
+    for (i = 0; i < n; i++) {
+        merged[m + i] = B[i];
+    }
+
+    mergeSort(merged, m + n);
+
+    printf("Merged array: ");
+    for (i = 0; i < m + n; i++) {
+        printf("%d ", merged[i]);
+    }
+
+    return 0;
+}
+
+
+
+
+7)#include <stdio.h>
+#define INF 9999
+#define V 4
+
+void floydWarshall(int graph[V][V]) {
+    int dist[V][V],i,j,k;
+    for ( i = 0; i < V; i++) {
+        for ( j = 0; j < V; j++) {
+            dist[i][j] = graph[i][j];
+        }
+    }
+
+    for ( k = 0; k < V; k++) {
+        for ( i = 0; i < V; i++) {
+            for ( j = 0; j < V; j++) {
+                if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+
+    printf("Shortest distance between every pair of vertices:\n");
+    for ( i = 0; i < V; i++) {
+        for ( j = 0; j < V; j++) {
+            if (dist[i][j] == INF) {
+                printf("INF\t");
+            } else {
+                printf("%d\t", dist[i][j]);
+            }
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int graph[V][V] = {
+        {0, 8, 7, 8},
+        {9, 0, 11, 12},
+        {10, 9, 0, 11},
+        {8, 10, 11, 0}
+    };
+
+    floydWarshall(graph);
+
+    return 0;
+}
+
+
+8)
+#include <stdio.h>
+#include <time.h>
+
+int linear_search(int arr[], int size, int key) {
+    clock_t start_time = clock();
+    int position = -1,i;
+    for ( i = 0; i < size; i++) {
+        if (arr[i] == key) {
+            position = i;
+            break;
+        }
+    }
+    clock_t end_time = clock();
+    return position;
+}
+
+int main() {
+    int series_A[] = {56, 89, 7, 13, 75, 23, 8, 12};
+    int size_A = sizeof(series_A) / sizeof(series_A[0]);
+    int key_A = 75;
+    int position_A = linear_search(series_A, size_A, key_A);
+    printf("Element %d found in position %d\n", key_A, position_A);
+
+    int series_B[] = {89, 45, -23, 45, 0, 44, 2};
+    int size_B = sizeof(series_B) / sizeof(series_B[0]);
+    int key_B = 0;
+    int position_B = linear_search(series_B, size_B, key_B);
+    printf("Element %d found in position %d\n", key_B, position_B);
+
+    int series_C[] = {45, 67, 56, 'A', 34, -2, 100};
+    int size_C = sizeof(series_C) / sizeof(series_C[0]);
+    int key_C = 90;
+    int position_C = linear_search(series_C, size_C, key_C);
+    if (position_C == -1) {
+        printf("Element %d Not Found\n", key_C);
+    } else {
+        printf("Element %d found in position %d\n", key_C, position_C);
+    }
+
+    return 0;
+}
+
+
+1
