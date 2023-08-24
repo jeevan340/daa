@@ -1,0 +1,317 @@
+1)#include <stdio.h>
+void findMthMaxAndNthMin(int arr[], int size, int M, int N, int *mthMax, int *nthMin) {
+    // Sort the array in ascending order (you can use various sorting algorithms)
+    int i,j;
+	for ( i = 0; i < size - 1; i++) {
+        for ( j = 0; j < size - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap arr[j] and arr[j + 1]
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+    // Find the N-th minimum
+    *nthMin = arr[N - 1];
+    // Find the M-th maximum
+    *mthMax = arr[size - M];
+}
+int main() {
+    int size;
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+
+    int arr[size],i;
+    printf("Enter %d elements of the array:\n", size);
+    for ( i = 0; i < size; i++) {
+        scanf("%d", &arr[i]);
+    }
+    int M, N;
+    printf("Enter the value of M (M-th maximum): ");
+    scanf("%d", &M);
+    printf("Enter the value of N (N-th minimum): ");
+    scanf("%d", &N);
+    
+    int mthMax, nthMin;
+
+    findMthMaxAndNthMin(arr, size, M, N, &mthMax, &nthMin);
+
+    // Calculate the sum and difference
+    int sumResult = nthMin + mthMax;
+    int differenceResult = mthMax - nthMin;
+
+    printf("%d-th maximum: %d\n", M, mthMax);
+    printf("%d-th minimum: %d\n", N, nthMin);
+    printf("Sum: %d\n", sumResult);
+    printf("Difference: %d\n", differenceResult);
+
+    return 0;
+}
+
+
+
+2)#include <stdio.h>
+
+int binarySearch(int nums[], int size, int target) {
+    int left = 0;
+    int right = size - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (nums[mid] == target) {
+            return mid; // Target found
+        }
+        else if (nums[mid] < target) {
+            left = mid + 1; // Search in the right half
+        }
+        else {
+            right = mid - 1; // Search in the left half
+        }
+    }
+
+    return -1; 
+}
+
+int main() {
+    int nums[] = {1, 3, 5, 7, 9, 11, 13, 15, 17};
+    int size = sizeof(nums) / sizeof(nums[0]);
+    int target = 7;
+
+    int result = binarySearch(nums, size, target);
+
+    if (result != -1) {
+        printf("Target %d found at index %d\n", target, result);
+    } else {
+        printf("Target %d not found in the array\n", target);
+    }
+
+    return 0;
+}
+
+
+
+
+3)#include <stdio.h>
+
+int reverseNumber(int num) {
+    int reversed = 0;
+
+    while (num != 0) {
+        int remainder = num % 10;
+        reversed = reversed * 10 + remainder;
+        num /= 10;
+    }
+
+    return reversed;
+}
+
+int main() {
+    int num;
+    printf("Enter a number: ");
+    scanf("%d", &num);
+
+    int reversed = reverseNumber(num);
+    printf("Reverse of %d is %d\n", num, reversed);
+
+    return 0;
+}
+
+
+
+4)#include <stdio.h>
+
+int binomialCoefficient(int n, int k) {
+    int dp[n + 1][k + 1];
+	int i,j;
+    for ( i = 0; i <= n; i++) {
+        for ( j = 0; j <= k; j++) {
+            if (j == 0 || j == i)
+                dp[i][j] = 1;
+            else
+                dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+        }
+    }
+
+    return dp[n][k];
+}
+
+int main() {
+    int n = 8, k = 8;
+    int result = binomialCoefficient(n, k);
+
+    printf("Binomial Coefficient C(%d, %d) is %d\n", n, k, result);
+
+    return 0;
+}
+
+
+
+5)#include <stdio.h>
+void printSubset(int subset[], int size) {
+    printf("Subset is (");
+    int i;
+    for ( i = 0; i < size; i++) {
+        if (i != 0) {
+            printf(", ");
+        }
+        printf("%d", subset[i]);
+    }
+    printf(")\n");
+}
+
+void findSubsets(int set[], int n, int targetSum, int subset[], int subsetSize, int currentIndex, int currentSum) {
+    if (currentSum == targetSum) {
+        printSubset(subset, subsetSize);
+        return;
+    }
+
+    if (currentIndex >= n || currentSum > targetSum) {
+        return;
+    }
+
+    subset[subsetSize] = set[currentIndex];
+    findSubsets(set, n, targetSum, subset, subsetSize + 1, currentIndex + 1, currentSum + set[currentIndex]);
+
+    findSubsets(set, n, targetSum, subset, subsetSize, currentIndex + 1, currentSum);
+}
+
+int main() {
+    int set1[] = {6, 2, 8, 1, 5};
+    int n1 = sizeof(set1) / sizeof(set1[0]);
+    int targetSum1 = 9;
+    int subset1[100];
+
+    int set2[] = {6, -4, 7, -1, 5, 2, 8, 1};
+    int n2 = sizeof(set2) / sizeof(set2[0]);
+    int targetSum2 = 10;
+    int subset2[100]; 
+
+    printf("Output:\n");
+    findSubsets(set1, n1, targetSum1, subset1, 0, 0, 0);
+    findSubsets(set2, n2, targetSum2, subset2, 0, 0, 0);
+
+    return 0;
+}
+
+
+
+
+6)#include <stdio.h>
+#include <math.h>
+
+int is_armstrong_number(int n) {
+    int num = n;
+    int k = 0;
+    while (num > 0) {
+        num /= 10;
+        k++;
+    }
+
+    num = n;
+    int total_sum = 0;
+    while (num > 0) {
+        int digit = num % 10;
+        total_sum += pow(digit, k);
+        num /= 10;
+    }
+
+    return total_sum == n;
+}
+
+int main() {
+    int input_1 = 153;
+    int input_2 = 419;
+
+    if (is_armstrong_number(input_1)) {
+        printf("Output: True\n");
+    } else {
+        printf("Output: False\n");
+    }
+
+    if (is_armstrong_number(input_2)) {
+        printf("Output: True\n");
+    } else {
+        printf("Output: False\n");
+    }
+
+    return 0;
+}
+
+
+
+7)#include<stdio.h>
+int main(){
+  int a[2][2],b[2][2],c[2][2],i,j;
+  int m1,m2,m3,m4,m5,m6,m7;
+
+  printf("Enter the 4 elements of first matrix: ");
+  for(i=0;i<2;i++)
+      for(j=0;j<2;j++)
+           scanf("%d",&a[i][j]);
+
+  printf("Enter the 4 elements of second matrix: ");
+  for(i=0;i<2;i++)
+      for(j=0;j<2;j++)
+           scanf("%d",&b[i][j]);
+
+  printf("\nThe first matrix is\n");
+  for(i=0;i<2;i++){
+      printf("\n");
+      for(j=0;j<2;j++)
+           printf("%d\t",a[i][j]);
+  }
+
+  printf("\nThe second matrix is\n");
+  for(i=0;i<2;i++){
+      printf("\n");
+      for(j=0;j<2;j++)
+           printf("%d\t",b[i][j]);
+  }
+
+  m1= (a[0][0] + a[1][1])*(b[0][0]+b[1][1]);
+  m2= (a[1][0]+a[1][1])*b[0][0];
+  m3= a[0][0]*(b[0][1]-b[1][1]);
+  m4= a[1][1]*(b[1][0]-b[0][0]);
+  m5= (a[0][0]+a[0][1])*b[1][1];
+  m6= (a[1][0]-a[0][0])*(b[0][0]+b[0][1]);
+  m7= (a[0][1]-a[1][1])*(b[1][0]+b[1][1]);
+
+  c[0][0]=m1+m4-m5+m7;
+  c[0][1]=m3+m5;
+  c[1][0]=m2+m4;
+  c[1][1]=m1-m2+m3+m6;r
+
+   printf("\nAfter multiplication using \n");
+   for(i=0;i<2;i++){
+      printf("\n");
+      for(j=0;j<2;j++)
+           printf("%d\t",c[i][j]);
+   }
+
+   return 0;
+}
+
+
+
+
+
+8)#include<stdio.h>
+long int multiplyNumbers(int n);
+int main() {
+    int n;
+    printf("Enter a positive integer: ");
+    scanf("%d",&n);
+    printf("Factorial of %d = %ld", n, multiplyNumbers(n));
+    return 0;
+}
+
+long int multiplyNumbers(int n) {
+    if (n>=1)
+        return n*multiplyNumbers(n-1);
+    else
+        return 1;
+}
+
+
